@@ -1,0 +1,13 @@
+10_galaxy_score
+10_bull
+10_alt_rank
+
+
+galaxyscore_7
+altrank_5
+
+LCF_galaxyscore_7
+LCF_altrank_7
+
+signal endpoint
+https://3commas.io/trade_signal/trading_view
