@@ -8,7 +8,6 @@ from accounts import ACCOUNTS
 from p3commas import P3cClient, print_bot
 
 
-
 # for account_name, account_creds in ACCOUNTS.items():
 #     print(f'====== {account_name}')
 #     p3c = account_creds['p3c']
@@ -56,6 +55,7 @@ while True:
                     new_pairs = [f"{quote}_{p['s']}" for p in lc_havequote]
                     new_pairs = new_pairs[:num_pairs]
 
+                    # blacklist filter
                     new_pairs = list(filter(lambda p: p not in pairs.blacklist, new_pairs))
 
                     b['pairs'] = new_pairs

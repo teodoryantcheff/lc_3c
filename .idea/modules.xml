@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/lunar_crush.iml" filepath="$PROJECT_DIR$/.idea/lunar_crush.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../lc_3c/.idea/lc_3c.iml" filepath="$PROJECT_DIR$/../lc_3c/.idea/lc_3c.iml" />
     </modules>
   </component>
 </project>

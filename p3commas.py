@@ -1,3 +1,4 @@
+import time
 
 from py3cw.request import Py3CW
 
@@ -16,10 +17,13 @@ class P3cClient:
         )
 
     def req(self, *args, **kwargs):
-        error, data = self.p3cw.request(**kwargs)
-        if error:
-            print(error)
-            1 / 0
+        cnt = 0
+        while cnt < 10:
+            error, data = self.p3cw.request(**kwargs)
+            if error:
+                print(error)
+                cnt += 1
+                time.sleep(cnt * 1.1)
         return data
 
     def get_bots(self):

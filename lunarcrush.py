@@ -1,4 +1,5 @@
 # LunarCrush
+import time
 
 import requests
 
@@ -8,9 +9,16 @@ API_KEY = '4i023iq6rqqnfnludrldui'
 
 
 def req(params):
-    r = requests.get('https://api.lunarcrush.com/v2', params=params)
-    r.raise_for_status()
-    res = r.json()
+    cnt = 0
+    while cnt < 100:
+        r = requests.get('https://api.lunarcrush.com/v2', params=params)
+        try:
+            r.raise_for_status()
+            res = r.json()
+        except requests.exceptions.HTTPError as e :
+            cnt += 1
+            print(e)
+            time.sleep(cnt*1.5)
 
     # if res['data']:
     #     for c in res['data']:
