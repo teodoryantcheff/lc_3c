@@ -15,10 +15,11 @@ def req(params):
         try:
             r.raise_for_status()
             res = r.json()
-        except requests.exceptions.HTTPError as e :
+        except requests.exceptions.HTTPError as e:
             cnt += 1
-            print(e)
-            time.sleep(cnt*1.5)
+            print(cnt, e)
+            # time.sleep(cnt * 1)
+            time.sleep(5)
 
     # if res['data']:
     #     for c in res['data']:
@@ -77,12 +78,14 @@ def filter_by_gs(l, gs):
 
 
 if __name__ == '__main__':
-    top_gscore = get_gs()
+    # print('==== GalaxyScore ====')
+    # top_gscore = get_gs(None)
+    # print_coins(top_gscore)
+
     print('==== GalaxyScore ====')
-    print_coins(top_gscore)
+    print_coins(get_acr())
 
     for q in PAIRS.keys():
         print(f'==== GalaxyScore {q} ====')
         print_coins(filter_by_quote(top_gscore, q), q)
         print("\n\n")
-

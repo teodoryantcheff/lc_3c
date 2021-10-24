@@ -24,7 +24,8 @@ class P3cClient:
                 print(error)
                 cnt += 1
                 time.sleep(cnt * 1.1)
-        return data
+            else:
+                return data
 
     def get_bots(self):
         return self.req(entity='bots', action='')
