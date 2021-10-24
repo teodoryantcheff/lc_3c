@@ -2,10 +2,10 @@ import time
 
 from py3cw.request import Py3CW
 
-
 # p3cw = Py3CW(
 #     key='c28d0197b53740d8b91216f0031996b84fa39d7deae344a3a396831ae6d4dbd2',
 #     secret='1b247aebf604a5db02eade2a80fb7417ec0e54fcb40bc56c055944761d3bba8867f972f3e01aedb73f20512f3ab0b82250bfedfa65c6bc4a7da779a3f38206c2ce12175242fe453a64e1fc9a7501f3764989e03c012afa7d1bb24b96315e5efa515d0d9f')
+from accounts import ACCOUNTS
 
 
 class P3cClient:
@@ -39,16 +39,17 @@ class P3cClient:
 
 def print_bot(data):
     if isinstance(data, dict):
-        data = [data,]
+        data = [data, ]
 
     for b in data:
         print(", ".join([f"{k}: {b[k]}" for k in ['id', 'is_enabled', 'name', 'pairs']]), f"pairs: {len(b['pairs'])}")
 
 
 if __name__ == '__main__':
+    a = list(ACCOUNTS.values())[0]
     p3client = P3cClient(
-        key='c28d0197b53740d8b91216f0031996b84fa39d7deae344a3a396831ae6d4dbd2',
-        secret='1b247aebf604a5db02eade2a80fb7417ec0e54fcb40bc56c055944761d3bba8867f972f3e01aedb73f20512f3ab0b82250bfedfa65c6bc4a7da779a3f38206c2ce12175242fe453a64e1fc9a7501f3764989e03c012afa7d1bb24b96315e5efa515d0d9f'
+        key=a['key'],
+        secret=a['secret']
     )
 
     print_bot(p3client.get_bots())
