@@ -1,12 +1,9 @@
-# LunarCrush
 import time
-import winsound
 
 import requests
 
+from accounts import LC_API_KEY
 from pairs import PAIRS
-
-API_KEY = '4i023iq6rqqnfnludrldui'
 
 
 def req(params):
@@ -32,7 +29,7 @@ def req(params):
 
 def get_acr(l=100):
     p = {
-        'key': API_KEY,
+        'key': LC_API_KEY,
         'data': 'market',
         'type': 'fast',
         'sort': 'acr',
@@ -43,7 +40,7 @@ def get_acr(l=100):
 
 def get_gs(l=100):
     p = {
-        'key': API_KEY,
+        'key': LC_API_KEY,
         'data': 'market',
         'type': 'fast',
         'sort': 'gs',
