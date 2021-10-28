@@ -54,7 +54,6 @@ while True:
                         print('unknown lc_type', lc_type, 'for bot', b['id'], b['name'])
                         continue
 
-
                     new_pairs = [f"{quote}_{p['s']}" for p in lc_havequote]
                     new_pairs = new_pairs[:num_pairs]
 
