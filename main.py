@@ -31,7 +31,7 @@ while True:
         )
         # p3c = account_creds['p3c']
 
-        bots = p3c.get_bots()
+        bots = p3c.get_bots(mode='real') + p3c.get_bots(mode='paper')
 
         for b in bots:
             for t in b['name'].upper().split():
@@ -58,7 +58,7 @@ while True:
 
                     b['pairs'] = new_pairs
                     p3c.update_bot(b['id'], b)
-                    print(b['id'], 'updated', cur_pairs, ' => ', new_pairs)
+                    print(b['id'], 'updated', sorted(cur_pairs), ' => ', sorted(new_pairs))
 
     print('\n\nlast update:', datetime.today().isoformat())
     time.sleep(2700)

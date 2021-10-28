@@ -27,14 +27,16 @@ class P3cClient:
             else:
                 return data
 
-    def get_bots(self):
-        return self.req(entity='bots', action='')
+    def get_bots(self, mode='real'):
+        "" "mode is one of 'real'|'paper' """
+        return self.req(entity='bots', action='', additional_headers={'Forced-Mode': mode})
 
-    def get_bot(self, bot_id: str):
-        return self.req(entity='bots', action='show', action_id=bot_id)
+    def get_bot(self, bot_id: str, mode='real'):
+        return self.req(entity='bots', action='show', action_id=bot_id, additional_headers={'Forced-Mode': mode})
 
-    def update_bot(self, bot_id: str, bot_data: dict):
-        self.req(entity='bots', action='update', action_id=str(bot_id), payload=bot_data)
+    def update_bot(self, bot_id: str, bot_data: dict, mode='real'):
+        return self.req(entity='bots', action='update', action_id=str(bot_id), payload=bot_data,
+                        additional_headers={'Forced-Mode': mode})
 
 
 def print_bot(data):
@@ -42,7 +44,8 @@ def print_bot(data):
         data = [data, ]
 
     for b in data:
-        print(", ".join([f"{k}: {b[k]}" for k in ['id', 'is_enabled', 'name', 'pairs']]), f"pairs: {len(b['pairs'])}")
+        b['pairs'] = sorted(b['pairs'])
+        print(", ".join([f"{k}: {b[k]}" for k in ['name', 'id', 'is_enabled', 'pairs']]), f"pairs: {len(b['pairs'])}")
 
 
 if __name__ == '__main__':
@@ -52,6 +55,6 @@ if __name__ == '__main__':
         secret=a['secret']
     )
 
-    print_bot(p3client.get_bots())
+    print_bot(p3client.get_bots('paper'))
 
-    print_bot(p3client.get_bot('6316317'))
+    # print_bot(p3client.get_bot('6316317', mode='real'))
