@@ -1,12 +1,10 @@
 import time
-
 from datetime import datetime
 
 import lunarcrush as lc
 import pairs
 from accounts import ACCOUNTS
 from p3commas import P3cClient, print_bot
-
 
 # for account_name, account_creds in ACCOUNTS.items():
 #     print(f'====== {account_name}')

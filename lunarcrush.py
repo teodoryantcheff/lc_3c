@@ -1,5 +1,6 @@
 # LunarCrush
 import time
+import winsound
 
 import requests
 
@@ -11,22 +12,22 @@ API_KEY = '4i023iq6rqqnfnludrldui'
 def req(params):
     cnt = 0
     while cnt < 100:
+    # while True:
         r = requests.get('https://api.lunarcrush.com/v2', params=params)
         try:
             r.raise_for_status()
             res = r.json()
+            # print(res['usage'])
+            return res['data'] if 'data' in res.keys() else None
         except requests.exceptions.HTTPError as e:
             cnt += 1
             print(cnt, e)
-            # time.sleep(cnt * 1)
-            time.sleep(5)
+            time.sleep(cnt * 1)
+            # time.sleep(20)
 
     # if res['data']:
     #     for c in res['data']:
     #         c['data']['cat_set'] = c['data']['categories'].split(',')
-
-    print(res['usage'])
-    return res['data']
 
 
 def get_acr(l=100):
@@ -78,9 +79,9 @@ def filter_by_gs(l, gs):
 
 
 if __name__ == '__main__':
-    # print('==== GalaxyScore ====')
-    # top_gscore = get_gs(None)
-    # print_coins(top_gscore)
+    print('==== GalaxyScore ====')
+    top_gscore = get_gs()
+    print_coins(top_gscore)
 
     print('==== GalaxyScore ====')
     print_coins(get_acr())
