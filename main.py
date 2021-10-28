@@ -40,15 +40,19 @@ while True:
                     num_pairs = int(num_pairs)
                     print(lc_type, num_pairs)
 
-                    print_bot(b)
+                    # print_bot(b)
                     cur_pairs = b['pairs']
                     quote = b['pairs'][0].split('_')[0]
 
                     if lc_type == 'GALAXYSCORE':
                         lc_havequote = lc.filter_by_quote(lc_gs_top, quote=quote)
                         lc_havequote = lc.filter_by_gs(lc_havequote, 65)
-                    if lc_type == 'ALTRANK':
+                    elif lc_type == 'ALTRANK':
                         lc_havequote = lc.filter_by_quote(lc_ar_top, quote=quote)
+                    else:
+                        print('unknown lc_type', lc_type, 'for bot', b['id'], b['name'])
+                        continue
+
 
                     new_pairs = [f"{quote}_{p['s']}" for p in lc_havequote]
                     new_pairs = new_pairs[:num_pairs]
@@ -58,7 +62,9 @@ while True:
 
                     b['pairs'] = new_pairs
                     p3c.update_bot(b['id'], b)
-                    print(b['id'], 'updated', sorted(cur_pairs), ' => ', sorted(new_pairs))
+                    print(b['name'], 'updated')
+                    print('current', sorted(cur_pairs))
+                    print('new    ', sorted(new_pairs))
 
     print('\n\nlast update:', datetime.today().isoformat())
     time.sleep(2700)
