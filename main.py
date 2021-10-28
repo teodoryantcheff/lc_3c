@@ -33,7 +33,8 @@ while True:
 
         bots = p3c.get_bots(mode='real') + p3c.get_bots(mode='paper')
 
-        for b in bots:
+        # for b in bots:
+        for b in [bb for bb in bots if bb['is_enabled']]:
             for t in b['name'].upper().split():
                 if t.startswith('LCF_'):
                     _, lc_type, num_pairs = t.split('_')
