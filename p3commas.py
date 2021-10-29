@@ -1,4 +1,5 @@
 import time
+from pprint import pprint
 
 from py3cw.request import Py3CW
 
@@ -38,6 +39,12 @@ class P3cClient:
         return self.req(entity='bots', action='update', action_id=str(bot_id), payload=bot_data,
                         additional_headers={'Forced-Mode': mode})
 
+    def get_markets(self):
+        return self.req(entity='accounts', action='market_list')
+
+    def get_pairs(self, market_code=''):
+        return self.req(entity='accounts', action='market_pairs', payload={'market_code': market_code})
+
 
 def print_bot(data):
     if isinstance(data, dict):
@@ -55,6 +62,10 @@ if __name__ == '__main__':
         secret=a['secret']
     )
 
-    print_bot(p3client.get_bots('paper'))
+    # print_bot(p3client.get_bots('paper'))
+    # print_bot(p3client.get_bots('real'))
+
+    # pprint(p3client.get_markets())
+    pprint(sorted(p3client.get_pairs('binance')))
 
     # print_bot(p3client.get_bot('6316317', mode='real'))
