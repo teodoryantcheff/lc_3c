@@ -65,12 +65,6 @@ def print_coins(l, quote=None):
         # print(f"{i:3d}   acr:{c['acr']:4d}   gs:{c['gs']:3.1f}   s:{c['s']:12s} {pstr} '{c['n']:25}' {c['cat_set']}")
 
 
-def filter_by_quote(l, quote):
-    quote = quote.upper()
-    r = filter(lambda p: f"{quote}_{p['s']}" in PAIRS[quote], l)
-    return r
-
-
 def filter_by_gs(l, gs):
     return filter(lambda p: p['gs'] > gs, l)
 

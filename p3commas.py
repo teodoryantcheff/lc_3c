@@ -29,7 +29,7 @@ class P3cClient:
                 return data
 
     def get_bots(self, mode='real'):
-        "" "mode is one of 'real'|'paper' """
+        """ mode is one of 'real'|'paper' """
         return self.req(entity='bots', action='', additional_headers={'Forced-Mode': mode})
 
     def get_bot(self, bot_id: str, mode='real'):
@@ -65,7 +65,14 @@ if __name__ == '__main__':
     # print_bot(p3client.get_bots('paper'))
     # print_bot(p3client.get_bots('real'))
 
-    # pprint(p3client.get_markets())
+    # b = p3client.get_bot('6142721')
+    # print_bot(b)
+    # b['pairs'] = ['USDT_1INCH', "USDC_BNB"]
+    # print(p3client.update_bot(b['id'], b, mode='paper'))
+
+    # print(p3client.req(entity='accounts', action=''))
+
+    pprint(p3client.get_markets())
     pprint(sorted(p3client.get_pairs('binance')))
 
     # print_bot(p3client.get_bot('6316317', mode='real'))

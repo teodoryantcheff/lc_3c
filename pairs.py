@@ -134,14 +134,6 @@ PAIRS = {
             "BNB_ILV", "BNB_YGG", "BNB_FIDA", "BNB_AGLD", "BNB_RAD", "BNB_BETA", },
 }
 
-blacklist = set([
-    'USDT_BNBDOWN', 'USDT_SXPDOWN', 'BTC_JUV', 'USDT_JUV', 'USDT_ATM', 'BTC_ATM', 'USDT_ACM', 'BTC_ACM', 'BUSD_ACM',
-    'USDT_ASR', 'BTC_ASR', 'BTC_OG', 'USDT_OG', 'USDT_PSG', 'BTC_PSG', 'BTC_BAR', 'BUSD_BAR', 'USDT_BAR', 'GBP_DOGE',
-    'USD_DOGE', 'BUSD_USDC', 'USDT_PAX', 'USDT_PAXG', 'USDT_SUSD', 'BTC_SUSD', 'USDT_BUSD', 'USDT_EUR', 'BUSD_EUR',
-    'USD_EUR', 'USDT_GBP', 'USD_GBP', 'USDT_AUD', 'BUSD_AUD', 'BTC_UNI', 'USDT_UNI', 'BTC_WBTC', 'ETH_WBTC',
-    'USDT_WBTC', 'USD_WBTC', 'BTC_EZ', 'ETH_EZ', 'USDT_FTM', 'BTC_FTM', 'USDT_FTMUSDT', 'BUSD_FTM', 'BNB_FTM'
-])
-
 if __name__ == '__main__':
     for q, b in PAIRS.items():
         print(f'{q}: {len(b)}')
