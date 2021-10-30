@@ -6,7 +6,7 @@ from py3cw.request import Py3CW
 # p3cw = Py3CW(
 #     key='c28d0197b53740d8b91216f0031996b84fa39d7deae344a3a396831ae6d4dbd2',
 #     secret='1b247aebf604a5db02eade2a80fb7417ec0e54fcb40bc56c055944761d3bba8867f972f3e01aedb73f20512f3ab0b82250bfedfa65c6bc4a7da779a3f38206c2ce12175242fe453a64e1fc9a7501f3764989e03c012afa7d1bb24b96315e5efa515d0d9f')
-from accounts import ACCOUNTS
+from accounts import USERS
 
 
 class P3cClient:
@@ -45,6 +45,12 @@ class P3cClient:
     def get_pairs(self, market_code=''):
         return self.req(entity='accounts', action='market_pairs', payload={'market_code': market_code})
 
+    def get_accounts(self, mode='real'):
+        return self.req(entity='accounts', action='', additional_headers={'Forced-Mode': mode})
+
+    def get_account(self, account_id, mode='real'):
+        return self.req(entity='accounts', action='account_info', action_id=str(account_id), additional_headers={'Forced-Mode': mode})
+
 
 def print_bot(data):
     if isinstance(data, dict):
@@ -56,7 +62,7 @@ def print_bot(data):
 
 
 if __name__ == '__main__':
-    a = list(ACCOUNTS.values())[0]
+    a = list(USERS.values())[0]
     p3client = P3cClient(
         key=a['key'],
         secret=a['secret']
@@ -65,14 +71,23 @@ if __name__ == '__main__':
     # print_bot(p3client.get_bots('paper'))
     # print_bot(p3client.get_bots('real'))
 
-    # b = p3client.get_bot('6142721')
-    # print_bot(b)
+    b = p3client.get_bot('6208906')
+    pprint(sorted(b.items()))
+
+    a = p3client.get_account(b['account_id'])
+    print(a['id'], a['name'], a['market_code'])
+    print(len(p3client.get_pairs(a['market_code'])))
+
+    #print_bot(b)
     # b['pairs'] = ['USDT_1INCH', "USDC_BNB"]
     # print(p3client.update_bot(b['id'], b, mode='paper'))
 
-    # print(p3client.req(entity='accounts', action=''))
+    # a = p3client.get_accounts(mode='real')
+    # a = a[1]
+    # pprint(a)
+    # print(a['id'], a['market_code'], a['name'])
 
-    pprint(p3client.get_markets())
-    pprint(sorted(p3client.get_pairs('binance')))
+    # pprint(p3client.get_markets())
+    # pprint(sorted(p3client.get_pairs('binance')))
 
     # print_bot(p3client.get_bot('6316317', mode='real'))

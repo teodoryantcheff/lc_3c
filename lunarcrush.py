@@ -22,10 +22,6 @@ def req(params):
             time.sleep(cnt * 1)
             # time.sleep(20)
 
-    # if res['data']:
-    #     for c in res['data']:
-    #         c['data']['cat_set'] = c['data']['categories'].split(',')
-
 
 def get_acr(l=100):
     p = {

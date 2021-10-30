@@ -134,6 +134,10 @@ PAIRS = {
             "BNB_ILV", "BNB_YGG", "BNB_FIDA", "BNB_AGLD", "BNB_RAD", "BNB_BETA", },
 }
 
+# TV orig pairs
+#BUSD_BAKE, BUSD_BNB, BUSD_BTC, BUSD_BTCST, BUSD_CAKE, BUSD_CREAM, BUSD_ETH, BUSD_FXS, BUSD_GHST, BUSD_ICP, BUSD_IQ, BUSD_KP3R, BUSD_LIT, BUSD_PROM, BUSD_SFP, BUSD_SOL, BUSD_SYS, BUSD_TVK, BUSD_TWT, BUSD_UNFI
+
+
 if __name__ == '__main__':
     for q, b in PAIRS.items():
         print(f'{q}: {len(b)}')
