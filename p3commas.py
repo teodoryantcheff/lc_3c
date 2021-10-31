@@ -39,24 +39,24 @@ class P3cClient:
         return self.req(entity='bots', action='update', action_id=str(bot_id), payload=bot_data,
                         additional_headers={'Forced-Mode': mode})
 
-    def get_markets(self):
-        return self.req(entity='accounts', action='market_list')
-
-    def get_pairs(self, market_code=''):
-        return self.req(entity='accounts', action='market_pairs', payload={'market_code': market_code})
-
     def get_accounts(self, mode='real'):
         return self.req(entity='accounts', action='', additional_headers={'Forced-Mode': mode})
 
     def get_account(self, account_id, mode='real'):
         return self.req(entity='accounts', action='account_info', action_id=str(account_id), additional_headers={'Forced-Mode': mode})
 
+    def get_markets(self):
+        return self.req(entity='accounts', action='market_list')
 
-def print_bot(data):
-    if isinstance(data, dict):
-        data = [data, ]
+    def get_pairs(self, market_code=''):
+        return self.req(entity='accounts', action='market_pairs', payload={'market_code': market_code})
 
-    for b in data:
+
+def print_bot(bots):
+    if isinstance(bots, dict):
+        data = [bots, ]
+
+    for b in bots:
         b['pairs'] = sorted(b['pairs'])
         print(", ".join([f"{k}: {b[k]}" for k in ['name', 'id', 'is_enabled', 'pairs']]), f"pairs: {len(b['pairs'])}")
 
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 
     b = p3client.get_bot('6208906')
     pprint(sorted(b.items()))
-
+    1/0
     a = p3client.get_account(b['account_id'])
     print(a['id'], a['name'], a['market_code'])
     print(len(p3client.get_pairs(a['market_code'])))
