@@ -58,11 +58,11 @@ while True:
                 if t.startswith('LCF_'):
                     _, lc_type, num_pairs = t.split('_')
                     num_pairs = int(num_pairs)
-                    print('\n', lc_type, num_pairs)
+                    # print('\n', lc_type, num_pairs)
 
             if num_pairs and lc_type:
                 # print_bot(b)
-                cur_pairs = b['pairs']
+                cur_pairs = b['pairs'].copy()
                 quote = b['pairs'][0].split('_')[0]
 
                 if lc_type == 'GALAXYSCORE':
@@ -76,6 +76,8 @@ while True:
 
                 new_pairs = [f"{quote}_{p['s']}" for p in lc_havequote]
 
+                new_str = ' '.join([f"{c:5s}" for c in sorted([c['s'] for c in lc_havequote[:num_pairs]])])
+                old_str = ' '.join([f"{p.split('_')[1]:5s}" for p in sorted(cur_pairs)])
                 # blacklist filter
                 new_pairs = list(set(new_pairs) - BLACKLIST)
 
@@ -83,10 +85,12 @@ while True:
 
                 b['pairs'] = new_pairs
                 u = p3c.update_bot(b['id'], b)
-                print(sorted(u['pairs']))
-                print(f"'{b['name']}' updated")
-                print(f' current {len(cur_pairs)}', sorted(cur_pairs))
-                print(f' new     {len(new_pairs)}', sorted(new_pairs))
+                # print(sorted(u['pairs']))
+                print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs}")
+                print(f' current {len(cur_pairs)} {old_str}')
+                # print(f' current {len(cur_pairs)}', sorted(cur_pairs))
+                print(f' new     {len(new_pairs)} {new_str}')
+                # print(f' new     {len(new_pairs)}', sorted(new_pairs))
 
     print('\n\nlast update:', datetime.today().isoformat())
     time.sleep(2700)

@@ -82,12 +82,12 @@ if __name__ == '__main__':
     # b['pairs'] = ['USDT_1INCH', "USDC_BNB"]
     # print(p3client.update_bot(b['id'], b, mode='paper'))
 
-    # a = p3client.get_accounts(mode='real')
+    a = p3client.get_accounts(mode='real')
     # a = a[1]
-    # pprint(a)
+    pprint(a)
     # print(a['id'], a['market_code'], a['name'])
 
     # pprint(p3client.get_markets())
-    pprint(sorted(p3client.get_pairs('binance')))
+    # pprint(sorted(p3client.get_pairs('binance')))
 
     # print_bot(p3client.get_bot('6316317', mode='real'))

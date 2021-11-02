@@ -29,7 +29,7 @@ def req(params):
             # time.sleep(20)
 
 
-def get_acr(l=100):
+def get_acr(l=150):
     p = {
         'data': 'market',
         'type': 'fast',
