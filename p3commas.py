@@ -71,12 +71,12 @@ if __name__ == '__main__':
     # print_bot(p3client.get_bots('paper'))
     # print_bot(p3client.get_bots('real'))
 
-    b = p3client.get_bot('6208906')
-    pprint(sorted(b.items()))
-    1/0
-    a = p3client.get_account(b['account_id'])
-    print(a['id'], a['name'], a['market_code'])
-    print(len(p3client.get_pairs(a['market_code'])))
+    # b = p3client.get_bot('6208906')
+    # pprint(sorted(b.items()))
+    # 1/0
+    # a = p3client.get_account(b['account_id'])
+    # print(a['id'], a['name'], a['market_code'])
+    # print(len(p3client.get_pairs(a['market_code'])))
 
     #print_bot(b)
     # b['pairs'] = ['USDT_1INCH', "USDC_BNB"]
@@ -88,6 +88,6 @@ if __name__ == '__main__':
     # print(a['id'], a['market_code'], a['name'])
 
     # pprint(p3client.get_markets())
-    # pprint(sorted(p3client.get_pairs('binance')))
+    pprint(sorted(p3client.get_pairs('binance')))
 
     # print_bot(p3client.get_bot('6316317', mode='real'))

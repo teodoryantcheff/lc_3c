@@ -15,21 +15,21 @@ BLACKLIST = {
 
 
 def filter_by_quote(lst, pairs, quote):
-    return filter(lambda p: f"{quote.upper()}_{p['s']}" in pairs, lst)
+    return list(filter(lambda p: f"{quote.upper()}_{p['s']}" in pairs, lst))
 
 
-account_cache = dict()
+accounts_cache = dict()
 pairs_cache = dict()
 
 while True:
     lc_galaxyscore = lc.get_gs()
-    lc_alatrank = lc.get_acr()
+    lc_altrank = lc.get_acr()
 
     print('============================  GalaxyScore  ============================')
     lc.print_coins(lc_galaxyscore)
 
     print('============================  AltRank  ============================')
-    lc.print_coins(lc_alatrank)
+    lc.print_coins(lc_altrank)
 
     for user_name, creds in USERS.items():
         print(f'\n\n====== {user_name}')
@@ -44,10 +44,10 @@ while True:
         for b in [bb for bb in bots if bb['is_enabled']]:
             num_pairs, lc_type = None, None
 
-            if b['account_id'] not in account_cache:
+            if b['account_id'] not in accounts_cache:
                 print('calling get account')
-                account_cache[b['account_id']] = p3c.get_account(b['account_id'])
-            account = account_cache[b['account_id']]
+                accounts_cache[b['account_id']] = p3c.get_account(b['account_id'])
+            account = accounts_cache[b['account_id']]
 
             if account['market_code'] not in pairs_cache:
                 print('calling get pairs')
@@ -69,7 +69,7 @@ while True:
                     lc_havequote = filter_by_quote(lc_galaxyscore, pairs, quote)
                     lc_havequote = lc.filter_by_gs(lc_havequote, 65)
                 elif lc_type == 'ALTRANK':
-                    lc_havequote = filter_by_quote(lc_alatrank, pairs, quote)
+                    lc_havequote = filter_by_quote(lc_altrank, pairs, quote)
                 else:
                     print('unknown lc_type', lc_type, 'for bot', b['id'], b['name'])
                     continue
@@ -82,7 +82,8 @@ while True:
                 new_pairs = new_pairs[:num_pairs]
 
                 b['pairs'] = new_pairs
-                p3c.update_bot(b['id'], b)
+                u = p3c.update_bot(b['id'], b)
+                print(sorted(u['pairs']))
                 print(f"'{b['name']}' updated")
                 print(f' current {len(cur_pairs)}', sorted(cur_pairs))
                 print(f' new     {len(new_pairs)}', sorted(new_pairs))
