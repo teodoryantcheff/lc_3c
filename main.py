@@ -93,4 +93,4 @@ while True:
                 # print(f' new     {len(new_pairs)}', sorted(new_pairs))
 
     print('\n\nlast update:', datetime.today().isoformat())
-    time.sleep(2700)
+    time.sleep(3600)

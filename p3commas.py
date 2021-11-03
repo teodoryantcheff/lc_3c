@@ -71,8 +71,12 @@ if __name__ == '__main__':
     # print_bot(p3client.get_bots('paper'))
     # print_bot(p3client.get_bots('real'))
 
-    # b = p3client.get_bot('6208906')
-    # pprint(sorted(b.items()))
+    b = p3client.get_bot('6208906')
+    # pprint([d for d in b['active_deals']])
+    # d['final_profit']
+    # d['actual_profit']
+    # d['actual_profit_percentage']
+    pprint([f'{d["from_currency"]}_{d["to_currency"]:9s} {d["actual_profit_percentage"]}%  {d["actual_profit"]} {d["final_profit"]}' for d in b['active_deals']])
     # 1/0
     # a = p3client.get_account(b['account_id'])
     # print(a['id'], a['name'], a['market_code'])
@@ -82,9 +86,9 @@ if __name__ == '__main__':
     # b['pairs'] = ['USDT_1INCH', "USDC_BNB"]
     # print(p3client.update_bot(b['id'], b, mode='paper'))
 
-    a = p3client.get_accounts(mode='real')
+    # a = p3client.get_accounts(mode='real')
     # a = a[1]
-    pprint(a)
+    # pprint(a)
     # print(a['id'], a['market_code'], a['name'])
 
     # pprint(p3client.get_markets())
