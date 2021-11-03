@@ -92,6 +92,8 @@ while True:
                     # print(f' current {len(cur_pairs)}', sorted(cur_pairs))
                     print(f' new     {len(new_pairs)} {new_str}')
                     # print(f' new     {len(new_pairs)}', sorted(new_pairs))
+                else:
+                    print(f'not enough pairs for {b["name"]} {lc_type} {num_pairs}, got {len(new_pairs)}')
 
     print('\n\nlast update:', datetime.today().isoformat())
     time.sleep(3600)
