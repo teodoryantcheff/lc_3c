@@ -83,14 +83,15 @@ while True:
 
                 new_pairs = new_pairs[:num_pairs]
 
-                b['pairs'] = new_pairs
-                u = p3c.update_bot(b['id'], b)
-                # print(sorted(u['pairs']))
-                print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs}")
-                print(f' current {len(cur_pairs)} {old_str}')
-                # print(f' current {len(cur_pairs)}', sorted(cur_pairs))
-                print(f' new     {len(new_pairs)} {new_str}')
-                # print(f' new     {len(new_pairs)}', sorted(new_pairs))
+                if len(new_pairs) > 0:
+                    b['pairs'] = new_pairs
+                    u = p3c.update_bot(b['id'], b)
+                    # print(sorted(u['pairs']))
+                    print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs}")
+                    print(f' current {len(cur_pairs)} {old_str}')
+                    # print(f' current {len(cur_pairs)}', sorted(cur_pairs))
+                    print(f' new     {len(new_pairs)} {new_str}')
+                    # print(f' new     {len(new_pairs)}', sorted(new_pairs))
 
     print('\n\nlast update:', datetime.today().isoformat())
     time.sleep(3600)

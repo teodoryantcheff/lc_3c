@@ -72,7 +72,7 @@ def print_coins(l, quote=None):
 
 
 def filter_by_gs(l, gs):
-    return filter(lambda p: p['gs'] > gs, l)
+    return list(filter(lambda p: p['gs'] > gs, l))
 
 
 if __name__ == '__main__':
