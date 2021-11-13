@@ -10,8 +10,9 @@ BLACKLIST = {
     'USDT_ASR', 'BTC_ASR', 'BTC_OG', 'USDT_OG', 'USDT_PSG', 'BTC_PSG', 'BTC_BAR', 'BUSD_BAR', 'USDT_BAR', 'GBP_DOGE',
     'USD_DOGE', 'BUSD_USDC', 'USDT_PAX', 'USDT_PAXG', 'USDT_SUSD', 'BTC_SUSD', 'USDT_BUSD', 'USDT_EUR', 'BUSD_EUR',
     'USD_EUR', 'USDT_GBP', 'USD_GBP', 'USDT_AUD', 'BUSD_AUD', 'BTC_UNI', 'USDT_UNI', 'BTC_WBTC', 'ETH_WBTC',
-    'USDT_WBTC', 'USD_WBTC', 'BTC_EZ', 'ETH_EZ', 'USDT_FTM', 'BTC_FTM', 'USDT_FTMUSDT', 'BUSD_FTM', 'BNB_FTM'
+    'USDT_WBTC', 'USD_WBTC', 'BTC_EZ', 'ETH_EZ',
 }
+# 'USDT_FTM', 'BTC_FTM', 'USDT_FTMUSDT', 'BUSD_FTM', 'BNB_FTM'
 
 
 def filter_by_quote(lst, pairs, quote):
@@ -45,12 +46,12 @@ while True:
             num_pairs, lc_type = None, None
 
             if b['account_id'] not in accounts_cache:
-                print('calling get account')
+                print(f'calling get account {b["account_id"]}')
                 accounts_cache[b['account_id']] = p3c.get_account(b['account_id'])
             account = accounts_cache[b['account_id']]
 
             if account['market_code'] not in pairs_cache:
-                print('calling get pairs')
+                print(f'calling get pairs for {account["market_code"]}')
                 pairs_cache[account['market_code']] = p3c.get_pairs(account['market_code'])
             pairs = pairs_cache[account['market_code']]
 
@@ -61,7 +62,6 @@ while True:
                     # print('\n', lc_type, num_pairs)
 
             if num_pairs and lc_type:
-                # print_bot(b)
                 cur_pairs = b['pairs'].copy()
                 quote = b['pairs'][0].split('_')[0]
 
@@ -75,23 +75,20 @@ while True:
                     continue
 
                 new_pairs = [f"{quote}_{p['s']}" for p in lc_havequote]
-
-                new_str = ' '.join([f"{c:5s}" for c in sorted([c['s'] for c in lc_havequote[:num_pairs]])])
-                old_str = ' '.join([f"{p.split('_')[1]:5s}" for p in sorted(cur_pairs)])
                 # blacklist filter
-                new_pairs = list(set(new_pairs) - BLACKLIST)
-
+                # new_pairs = list(set(new_pairs) - BLACKLIST)
+                new_pairs = [p for p in new_pairs if p not in BLACKLIST]
                 new_pairs = new_pairs[:num_pairs]
+
+                cur_str = ' '.join([f"{p.split('_')[1]:>5s} " for p in cur_pairs])
+                new_str = ' '.join([f"{p:>5s}{'+' if p not in cur_str else ' '}" for p in [p.split('_')[1] for p in new_pairs]])
 
                 if len(new_pairs) > 0:
                     b['pairs'] = new_pairs
                     u = p3c.update_bot(b['id'], b)
-                    # print(sorted(u['pairs']))
-                    print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs}")
-                    print(f' current {len(cur_pairs)} {old_str}')
-                    # print(f' current {len(cur_pairs)}', sorted(cur_pairs))
+                    print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs} {quote}")
+                    print(f' current {len(cur_pairs)} {cur_str}')
                     print(f' new     {len(new_pairs)} {new_str}')
-                    # print(f' new     {len(new_pairs)}', sorted(new_pairs))
                 else:
                     print(f'not enough pairs for {b["name"]} {lc_type} {num_pairs}, got {len(new_pairs)}')
 
