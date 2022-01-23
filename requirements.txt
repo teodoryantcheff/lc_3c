@@ -1,2 +1,2 @@
-py3cw
-requests
+requests~=2.27.1
+py3cw~=0.0.33
