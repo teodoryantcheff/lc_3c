@@ -3,7 +3,7 @@ from datetime import datetime
 
 import lunarcrush as lc
 from accounts import USERS
-from p3commas import P3cClient
+from p3commas import P3cClient, P3cError
 
 BLACKLIST = {
     'USDT_BNBDOWN', 'USDT_SXPDOWN', 'BTC_JUV', 'USDT_JUV', 'USDT_ATM', 'BTC_ATM', 'USDT_ACM', 'BTC_ACM', 'BUSD_ACM',
@@ -85,7 +85,13 @@ while True:
 
                 if len(new_pairs) > 0:
                     b['pairs'] = new_pairs
-                    u = p3c.update_bot(b['id'], b)
+                    try:
+                        u = p3c.update_bot(b['id'], b)
+                    except P3cError as e:
+                        if 'No market data for this pair' in str(e):
+                            print('delisted market pair. Invalidating pairs_cache')
+                            pairs_cache[account['market_code']] = p3c.get_pairs(account['market_code'])
+                            continue
                     print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs} {quote}")
                     print(f' current {len(cur_pairs)} {cur_str}')
                     print(f' new     {len(new_pairs)} {new_str}')

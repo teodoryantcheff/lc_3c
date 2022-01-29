@@ -9,24 +9,34 @@ from py3cw.request import Py3CW
 from accounts import USERS
 
 
+class P3cError(Exception):
+    pass
+
+
 class P3cClient:
     def __init__(self, key, secret):
         self.p3cw = Py3CW(
-            request_options={'retry_status_codes': [500, 502, 503, 504]},
+            # https://github.com/bogdanteodoru/py3cw
+            request_options={'retry_status_codes': [500, 502, 503, 504], 'nr_of_retries': 10,},
             key=key,
             secret=secret,
         )
 
     def req(self, *args, **kwargs):
-        cnt = 0
-        while cnt < 10:
-            error, data = self.p3cw.request(**kwargs)
-            if error:
-                print(error)
-                cnt += 1
-                time.sleep(cnt * 1.1)
-            else:
-                return data
+        # cnt = 0
+        # while cnt < 1:
+        #     error, data = self.p3cw.request(**kwargs)
+        #     if error and error['error']:
+        #         print(error)
+        #         cnt += 1
+        #         time.sleep(cnt * 1.1)
+        #     else:
+        #         return data
+        error, data = self.p3cw.request(**kwargs)
+        if error:
+            # print(error)
+            raise P3cError(error)
+        return data
 
     def get_bots(self, mode='real'):
         """ mode is one of 'real'|'paper' """
@@ -95,3 +105,5 @@ if __name__ == '__main__':
     # pprint(sorted(p3client.get_pairs('binance')))
 
     # print_bot(p3client.get_bot('6316317', mode='real'))
+    # BUSD_XEM
+    # {'error': True, 'msg': "Other error occurred: record_invalid Invalid parameters {'pairs': ['No market data for this pair: BUSD_XEM']}."}
