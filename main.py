@@ -45,58 +45,64 @@ while True:
         for b in [bb for bb in bots if bb['is_enabled']]:
             num_pairs, lc_type = None, None
 
-            if b['account_id'] not in accounts_cache:
-                print(f'calling get account {b["account_id"]}')
-                accounts_cache[b['account_id']] = p3c.get_account(b['account_id'])
-            account = accounts_cache[b['account_id']]
+            done = False
+            while not done:
+                if b['account_id'] not in accounts_cache:
+                    print(f'calling get account {b["account_id"]}')
+                    accounts_cache[b['account_id']] = p3c.get_account(b['account_id'])
+                account = accounts_cache[b['account_id']]
 
-            if account['market_code'] not in pairs_cache:
-                print(f'calling get pairs for {account["market_code"]}')
-                pairs_cache[account['market_code']] = p3c.get_pairs(account['market_code'])
-            pairs = pairs_cache[account['market_code']]
+                if account['market_code'] not in pairs_cache:
+                    print(f'calling get pairs for {account["market_code"]}')
+                    pairs_cache[account['market_code']] = p3c.get_pairs(account['market_code'])
+                pairs = pairs_cache[account['market_code']]
 
-            for t in b['name'].upper().split():
-                if t.startswith('LCF_'):
-                    _, lc_type, num_pairs = t.split('_')
-                    num_pairs = int(num_pairs)
-                    # print('\n', lc_type, num_pairs)
+                for t in b['name'].upper().split():
+                    if t.startswith('LCF_'):
+                        _, lc_type, num_pairs = t.split('_')
+                        num_pairs = int(num_pairs)
+                        # print('\n', lc_type, num_pairs)
 
-            if num_pairs and lc_type:
-                cur_pairs = b['pairs'].copy()
-                quote = b['pairs'][0].split('_')[0]
+                if num_pairs and lc_type:
+                    cur_pairs = b['pairs'].copy()
+                    quote = b['pairs'][0].split('_')[0]
 
-                if lc_type == 'GALAXYSCORE':
-                    lc_havequote = filter_by_quote(lc_galaxyscore, pairs, quote)
-                    lc_havequote = lc.filter_by_gs(lc_havequote, 65)
-                elif lc_type == 'ALTRANK':
-                    lc_havequote = filter_by_quote(lc_altrank, pairs, quote)
+                    if lc_type == 'GALAXYSCORE':
+                        lc_havequote = filter_by_quote(lc_galaxyscore, pairs, quote)
+                        lc_havequote = lc.filter_by_gs(lc_havequote, 65)
+                    elif lc_type == 'ALTRANK':
+                        lc_havequote = filter_by_quote(lc_altrank, pairs, quote)
+                    else:
+                        print('unknown lc_type', lc_type, 'for bot', b['id'], b['name'])
+                        continue
+
+                    new_pairs = [f"{quote}_{p['s']}" for p in lc_havequote]
+                    # blacklist filter
+                    # new_pairs = list(set(new_pairs) - BLACKLIST)
+                    new_pairs = [p for p in new_pairs if p not in BLACKLIST]
+                    new_pairs = new_pairs[:num_pairs]
+
+                    cur_str = ' '.join([f"{p.split('_')[1]:>5s} " for p in cur_pairs])
+                    new_str = ' '.join([f"{p:>5s}{'+' if p not in cur_str else ' '}" for p in [p.split('_')[1] for p in new_pairs]])
+
+                    if len(new_pairs) > 0:
+                        b['pairs'] = new_pairs
+                        try:
+                            u = p3c.update_bot(b['id'], b)
+                        except P3cError as e:
+                            if 'No market data for this pair' in str(e):
+                                print('delisted market pair. Invalidating pairs_cache')
+                                pairs_cache.pop(account['market_code'])
+                                done = False
+                                continue
+                        done = True
+                        print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs} {quote}")
+                        print(f' current {len(cur_pairs)} {cur_str}')
+                        print(f' new     {len(new_pairs)} {new_str}')
+                    else:
+                        print(f'not enough pairs for {b["name"]} {lc_type} {num_pairs}, got {len(new_pairs)}')
                 else:
-                    print('unknown lc_type', lc_type, 'for bot', b['id'], b['name'])
-                    continue
-
-                new_pairs = [f"{quote}_{p['s']}" for p in lc_havequote]
-                # blacklist filter
-                # new_pairs = list(set(new_pairs) - BLACKLIST)
-                new_pairs = [p for p in new_pairs if p not in BLACKLIST]
-                new_pairs = new_pairs[:num_pairs]
-
-                cur_str = ' '.join([f"{p.split('_')[1]:>5s} " for p in cur_pairs])
-                new_str = ' '.join([f"{p:>5s}{'+' if p not in cur_str else ' '}" for p in [p.split('_')[1] for p in new_pairs]])
-
-                if len(new_pairs) > 0:
-                    b['pairs'] = new_pairs
-                    try:
-                        u = p3c.update_bot(b['id'], b)
-                    except P3cError as e:
-                        if 'No market data for this pair' in str(e):
-                            print('delisted market pair. Invalidating pairs_cache')
-                            pairs_cache[account['market_code']] = p3c.get_pairs(account['market_code'])
-                            continue
-                    print(f"\nUpdated '{b['name']}' {lc_type} {num_pairs} {quote}")
-                    print(f' current {len(cur_pairs)} {cur_str}')
-                    print(f' new     {len(new_pairs)} {new_str}')
-                else:
-                    print(f'not enough pairs for {b["name"]} {lc_type} {num_pairs}, got {len(new_pairs)}')
+                    done = True  # nothing to do for bot, does not have the magic words in name
 
     print('\n\nlast update:', datetime.today().isoformat())
     time.sleep(3600)
