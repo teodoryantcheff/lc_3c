@@ -42,7 +42,8 @@ while True:
         bots = p3c.get_bots(mode='real') + p3c.get_bots(mode='paper')
 
         # for b in bots:
-        for b in [bb for bb in bots if bb['is_enabled']]:
+        # for b in [bb for bb in bots if bb['is_enabled']]:
+        for b in filter(lambda bb: bb['is_enabled'], bots):
             num_pairs, lc_type = None, None
 
             done = False
